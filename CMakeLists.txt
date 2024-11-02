@@ -54,19 +54,6 @@ if (NOT MODEL)
     set(MPI_HOME /usr/lib64/openmpi/)
 endif ()
 
-
-# Add this section after defining the ENABLE_MPI option
-
-# Find the Charm++ library, assuming it's installed and properly configured
-find_package(Charm REQUIRED)
-
-# Use AMPI compiler
-set(CMAKE_C_COMPILER ${CHARM_C_COMPILER})
-set(CMAKE_CXX_COMPILER ${CHARM_CXX_COMPILER})
-
-# Include the AMPI directories
-include_directories(${CHARM_INCLUDE_DIRS})
-
 #set(NVHPC_OFFLOAD cc60)
 #set(CXX_EXTRA_FLAGS -stdpar=multicore)
 ###########
@@ -356,8 +343,7 @@ endif ()
 if (NOT ENABLE_MPI)
     list(APPEND IMPL_DEFINITIONS NO_MPI)
 else ()
-    find_package(MPI REQUIRED)
-    list(APPEND LINK_LIBRARIES MPI::MPI_C)
+    set(CMAKE_CXX_COMPILER ampiCC)
 endif ()
 if (ENABLE_PROFILING)
     list(APPEND IMPL_DEFINITIONS ENABLE_PROFILING)
