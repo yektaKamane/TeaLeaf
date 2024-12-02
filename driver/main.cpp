@@ -57,7 +57,7 @@ void settings_overload(Settings &settings, int argc, char **argv) {
       print_and_log(settings, "\t\tThis option is no-op for CPU-only models.'\n");
       print_and_log(settings, "\t\tSetting this to false on an MPI that is not device-aware may cause a segfault.'\n");
       finalise_comms();
-      std::exit(EXIT_SUCCESS);
+      exit(EXIT_SUCCESS);
     }
   }
 }

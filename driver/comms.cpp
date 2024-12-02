@@ -21,6 +21,11 @@ void send_recv_message(Settings &settings, double *send_buffer, double *recv_buf
   MPI_Isend(send_buffer, buffer_len, MPI_DOUBLE, neighbour, send_tag, MPI_COMM_WORLD, send_request);
   MPI_Irecv(recv_buffer, buffer_len, MPI_DOUBLE, neighbour, recv_tag, MPI_COMM_WORLD, recv_request);
 
+  MPI_Info chkpt_info;
+  MPI_Info_create(&chkpt_info);
+  MPI_Info_set(chkpt_info, "ampi_checkpoint", "in_memory");
+  // AMPI_Migrate(chkpt_info);
+
   STOP_PROFILING(settings.kernel_profile, __func__);
 }
 

@@ -110,7 +110,7 @@ void write_to_visit(const int nx, const int ny, const int x_off, const int y_off
 
   if (!bovfp) {
     std::printf("Could not open file %s\n", bovname);
-    std::exit(1);
+    exit(1);
   }
 
   std::fprintf(bovfp, "TIME: %.4f\n", time);
@@ -128,7 +128,7 @@ void write_to_visit(const int nx, const int ny, const int x_off, const int y_off
   FILE *datfp = std::fopen(datname, "wb");
   if (!datfp) {
     std::printf("Could not open file %s\n", datname);
-    std::exit(1);
+    exit(1);
   }
 
   std::fwrite(data, sizeof(double), nx * ny, datfp);
