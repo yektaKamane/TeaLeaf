@@ -1,6 +1,21 @@
 #include "application.h"
 #include "comms.h"
 #include "drivers.h"
+#include <time.h>
+#include <iostream>
+#include <chrono>
+
+void about_to_migrate() {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    printf("Rank %d is about to migrate.\n", rank);
+}
+
+void just_migrated() {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    printf("Rank %d has just migrated.\n", rank);
+}
 
 double calc_dt(Chunk *chunks);
 void calc_min_timestep(Chunk *chunks, double *dt, int chunks_per_task);
@@ -9,10 +24,46 @@ void solve(Chunk *chunks, Settings &settings, int tt, double *wallclock_prev);
 // The main timestep loop
 bool diffuse(Chunk *chunks, Settings &settings) {
   double wallclock_prev = 0.0;
+
+  int rank;
+  int lb_freq = 5;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  AMPI_Trace_begin();                      
+
   for (int tt = 0; tt < settings.end_step; ++tt) {
+
+
+    // if (rank == 1){
+    //   AMPI_Load_set_value(100000);
+    //   // std::this_thread::sleep_for(std::chrono::seconds(5));
+    // }
+
+    // else{
+    //   AMPI_Load_set_value(10);
+    // }
+
+
+    // if (tt % lb_freq == 0) {
+    //   // printf("Rank: %d\n", rank);
+    //   // AMPI_Register_about_to_migrate(about_to_migrate);
+    //   AMPI_Migrate(AMPI_INFO_LB_SYNC);
+    //   // AMPI_Register_just_migrated(just_migrated);
+    // }
+
+    // AMPI_Register_about_to_migrate(about_to_migrate);
+    // AMPI_Register_just_migrated(just_migrated);
+
+    // int rank;
+    // MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    // clock_t start_time, end_time;
+    // start_time = clock();
     solve(chunks, settings, tt, &wallclock_prev);
+    // end_time = clock();
+    // double load = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    // printf("Rank %d measured load: %.2f seconds.\n", rank, load);
   }
 
+  AMPI_Trace_end();
   return field_summary_driver(chunks, settings, true);
 }
 

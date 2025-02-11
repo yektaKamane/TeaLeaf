@@ -20,6 +20,10 @@ void cg_driver(Chunk *chunks, Settings &settings, double rx, double ry, double *
     if (sqrt(fabs(*error)) < settings.eps) break;
   }
 
+  // int rank;
+  // MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  // printf("Rank %d had CG iterations: %d\n", rank, tt);
+  
   print_and_log(settings, " CG: \t\t\t%d iterations\n", tt);
 }
 

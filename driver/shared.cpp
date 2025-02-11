@@ -1,6 +1,8 @@
 #include "shared.h"
 #include "comms.h"
 
+#include <iostream>
+
 // Initialises the log file pointer
 void initialise_log(Settings &settings) {
   // Only write to log in master rank

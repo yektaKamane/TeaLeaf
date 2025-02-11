@@ -125,7 +125,7 @@ endif ()
 
 # setup some defaults flags for everything
 set(DEFAULT_DEBUG_CXX_FLAGS -O2 -Wall)
-set(DEFAULT_RELEASE_CXX_FLAGS -O3 -Wall -march=native)
+set(DEFAULT_RELEASE_CXX_FLAGS -O3 -Wall -march=native )
 
 macro(hint_flag FLAG DESCRIPTION)
     if (NOT DEFINED ${FLAG})
@@ -349,7 +349,7 @@ else ()
     # list(APPEND LINK_LIBRARIES MPI::MPI_C)
 endif ()
 if (ENABLE_PROFILING)
-    list(APPEND IMPL_DEFINITIONS ENABLE_PROFILING)
+    list(APPEND IMPL_DEFINITIONS ENABLE_PROFILING USE_PROJECTIONS)
 endif ()
 
 message(STATUS "CXX vendor  : ${CMAKE_CXX_COMPILER_ID} (${CMAKE_CXX_COMPILER})")
@@ -391,7 +391,7 @@ target_compile_options(${EXE_NAME} PUBLIC "$<$<COMPILE_LANGUAGE:CXX>:$<$<CONFIG:
 target_compile_options(${EXE_NAME} PUBLIC "$<$<COMPILE_LANGUAGE:C>:$<$<CONFIG:Release>:${ACTUAL_RELEASE_C_FLAGS};${C_EXTRA_FLAGS}>>")
 target_link_options(${EXE_NAME} PUBLIC $<$<COMPILE_LANGUAGE:CXX>:LINKER:${CXX_EXTRA_LINKER_FLAGS}>)
 target_link_options(${EXE_NAME} PUBLIC $<$<COMPILE_LANGUAGE:CXX>:${LINK_FLAGS};${CXX_EXTRA_LINK_FLAGS}>)
-
+target_link_options(${EXE_NAME} PUBLIC -tracemode projections)
 
 # some models require the target to be already specified so they can finish their setup here
 # this only happens if the model.cmake definition contains the `setup_target` macro

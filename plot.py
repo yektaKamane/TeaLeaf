@@ -2,7 +2,7 @@ import re
 import matplotlib.pyplot as plt
 
 # File path for the log file
-log_file = "output.out"
+log_file = "tea.out"
 output_image = "incremental_wallclock_vs_timestep.png"
 
 # Lists to store timestep numbers and wallclock times
