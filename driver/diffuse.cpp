@@ -28,7 +28,6 @@ bool diffuse(Chunk *chunks, Settings &settings) {
   int rank;
   int lb_freq = 5;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  AMPI_Trace_begin();                      
 
   for (int tt = 0; tt < settings.end_step; ++tt) {
 
@@ -63,7 +62,6 @@ bool diffuse(Chunk *chunks, Settings &settings) {
     // printf("Rank %d measured load: %.2f seconds.\n", rank, load);
   }
 
-  AMPI_Trace_end();
   return field_summary_driver(chunks, settings, true);
 }
 
